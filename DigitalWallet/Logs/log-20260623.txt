@@ -1,0 +1,91 @@
+2026-06-23 09:57:53.895 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: https://localhost:7090
+2026-06-23 09:57:54.001 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: http://localhost:5170
+2026-06-23 09:57:54.010 +03:00 [INF] [Microsoft.Hosting.Lifetime] Application started. Press Ctrl+C to shut down.
+2026-06-23 09:57:54.013 +03:00 [INF] [Microsoft.Hosting.Lifetime] Hosting environment: Development
+2026-06-23 09:57:54.015 +03:00 [INF] [Microsoft.Hosting.Lifetime] Content root path: C:\Users\hp\source\repos\DigitalWallet\DigitalWallet
+2026-06-23 09:57:59.425 +03:00 [ERR] [Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware] An unhandled exception has occurred while executing the request.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Conflicting method/path combination "PUT api/Admin/{email}" for actions - DigitalWallet.Controllers.AdminController.freezeWallet (DigitalWallet),DigitalWallet.Controllers.AdminController.unfreezeWallet (DigitalWallet). Actions require a unique method/path combination for Swagger/OpenAPI 3.0. Use ConflictingActionsResolver as a workaround
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerDocumentWithoutFilters(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-06-23 09:59:58.809 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: https://localhost:7090
+2026-06-23 09:59:58.951 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: http://localhost:5170
+2026-06-23 09:59:58.959 +03:00 [INF] [Microsoft.Hosting.Lifetime] Application started. Press Ctrl+C to shut down.
+2026-06-23 09:59:58.963 +03:00 [INF] [Microsoft.Hosting.Lifetime] Hosting environment: Development
+2026-06-23 09:59:58.965 +03:00 [INF] [Microsoft.Hosting.Lifetime] Content root path: C:\Users\hp\source\repos\DigitalWallet\DigitalWallet
+2026-06-23 10:00:07.988 +03:00 [ERR] [Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware] An unhandled exception has occurred while executing the request.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Conflicting method/path combination "PUT api/Admin/{email}" for actions - DigitalWallet.Controllers.AdminController.freezeWallet (DigitalWallet),DigitalWallet.Controllers.AdminController.unfreezeWallet (DigitalWallet). Actions require a unique method/path combination for Swagger/OpenAPI 3.0. Use ConflictingActionsResolver as a workaround
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerDocumentWithoutFilters(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-06-23 10:06:19.307 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: https://localhost:7090
+2026-06-23 10:06:19.506 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: http://localhost:5170
+2026-06-23 10:06:19.515 +03:00 [INF] [Microsoft.Hosting.Lifetime] Application started. Press Ctrl+C to shut down.
+2026-06-23 10:06:19.519 +03:00 [INF] [Microsoft.Hosting.Lifetime] Hosting environment: Development
+2026-06-23 10:06:19.522 +03:00 [INF] [Microsoft.Hosting.Lifetime] Content root path: C:\Users\hp\source\repos\DigitalWallet\DigitalWallet
+2026-06-23 10:06:25.170 +03:00 [ERR] [Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware] An unhandled exception has occurred while executing the request.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Conflicting method/path combination "PUT api/Admin/{email}" for actions - DigitalWallet.Controllers.AdminController.freezeWallet (DigitalWallet),DigitalWallet.Controllers.AdminController.unfreezeWallet (DigitalWallet). Actions require a unique method/path combination for Swagger/OpenAPI 3.0. Use ConflictingActionsResolver as a workaround
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerDocumentWithoutFilters(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-06-23 10:10:19.067 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: http://localhost:5170
+2026-06-23 10:10:19.132 +03:00 [INF] [Microsoft.Hosting.Lifetime] Application started. Press Ctrl+C to shut down.
+2026-06-23 10:10:19.135 +03:00 [INF] [Microsoft.Hosting.Lifetime] Hosting environment: Development
+2026-06-23 10:10:19.137 +03:00 [INF] [Microsoft.Hosting.Lifetime] Content root path: C:\Users\hp\source\repos\DigitalWallet\DigitalWallet
+2026-06-23 10:14:28.838 +03:00 [INF] [Microsoft.Hosting.Lifetime] Application is shutting down...
+2026-06-23 10:14:51.788 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: https://localhost:7090
+2026-06-23 10:14:51.834 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: http://localhost:5170
+2026-06-23 10:14:51.840 +03:00 [INF] [Microsoft.Hosting.Lifetime] Application started. Press Ctrl+C to shut down.
+2026-06-23 10:14:51.844 +03:00 [INF] [Microsoft.Hosting.Lifetime] Hosting environment: Development
+2026-06-23 10:14:51.846 +03:00 [INF] [Microsoft.Hosting.Lifetime] Content root path: C:\Users\hp\source\repos\DigitalWallet\DigitalWallet
+2026-06-23 10:15:13.475 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Admin/users responded 401 in 199.3947 ms
+2026-06-23 10:25:39.350 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: https://localhost:7090
+2026-06-23 10:25:39.445 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: http://localhost:5170
+2026-06-23 10:25:39.454 +03:00 [INF] [Microsoft.Hosting.Lifetime] Application started. Press Ctrl+C to shut down.
+2026-06-23 10:25:39.458 +03:00 [INF] [Microsoft.Hosting.Lifetime] Hosting environment: Development
+2026-06-23 10:25:39.461 +03:00 [INF] [Microsoft.Hosting.Lifetime] Content root path: C:\Users\hp\source\repos\DigitalWallet\DigitalWallet
+2026-06-23 10:26:23.863 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Admin/users responded 401 in 209.7447 ms
+2026-06-23 10:28:52.641 +03:00 [WRN] [Microsoft.EntityFrameworkCore.Model.Validation] No store type was specified for the decimal property 'Amount' on entity type 'Transaction'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-23 10:28:52.646 +03:00 [WRN] [Microsoft.EntityFrameworkCore.Model.Validation] No store type was specified for the decimal property 'Balance' on entity type 'Wallet'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-23 10:28:56.855 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Auth/Register responded 200 in 6588.7909 ms
+2026-06-23 10:29:12.119 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Auth/Login responded 401 in 1317.3997 ms
+2026-06-23 10:29:21.204 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Auth/Login responded 200 in 638.7118 ms
+2026-06-23 10:37:03.202 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: https://localhost:7090
+2026-06-23 10:37:03.413 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: http://localhost:5170
+2026-06-23 10:37:03.425 +03:00 [INF] [Microsoft.Hosting.Lifetime] Application started. Press Ctrl+C to shut down.
+2026-06-23 10:37:03.432 +03:00 [INF] [Microsoft.Hosting.Lifetime] Hosting environment: Development
+2026-06-23 10:37:03.433 +03:00 [INF] [Microsoft.Hosting.Lifetime] Content root path: C:\Users\hp\source\repos\DigitalWallet\DigitalWallet
+2026-06-23 10:37:28.242 +03:00 [WRN] [Microsoft.EntityFrameworkCore.Model.Validation] No store type was specified for the decimal property 'Amount' on entity type 'Transaction'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-23 10:37:28.281 +03:00 [WRN] [Microsoft.EntityFrameworkCore.Model.Validation] No store type was specified for the decimal property 'Balance' on entity type 'Wallet'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-23 10:37:30.693 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Auth/Register responded 200 in 5347.3722 ms
+2026-06-23 10:37:57.882 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Auth/Login responded 200 in 1531.4373 ms
+2026-06-23 10:38:28.094 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Admin/users responded 401 in 58.9802 ms
+2026-06-23 10:49:10.280 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: https://localhost:7090
+2026-06-23 10:49:10.357 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: http://localhost:5170
+2026-06-23 10:49:10.364 +03:00 [INF] [Microsoft.Hosting.Lifetime] Application started. Press Ctrl+C to shut down.
+2026-06-23 10:49:10.367 +03:00 [INF] [Microsoft.Hosting.Lifetime] Hosting environment: Development
+2026-06-23 10:49:10.369 +03:00 [INF] [Microsoft.Hosting.Lifetime] Content root path: C:\Users\hp\source\repos\DigitalWallet\DigitalWallet
+2026-06-23 10:51:24.412 +03:00 [WRN] [Microsoft.EntityFrameworkCore.Model.Validation] No store type was specified for the decimal property 'Amount' on entity type 'Transaction'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-23 10:51:24.423 +03:00 [WRN] [Microsoft.EntityFrameworkCore.Model.Validation] No store type was specified for the decimal property 'Balance' on entity type 'Wallet'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-23 10:51:27.193 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Auth/Login responded 200 in 5132.5696 ms
+2026-06-23 10:51:43.697 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Admin/users responded 401 in 29.2138 ms
+2026-06-23 10:55:53.799 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: https://localhost:7090
+2026-06-23 10:55:53.902 +03:00 [INF] [Microsoft.Hosting.Lifetime] Now listening on: http://localhost:5170
+2026-06-23 10:55:53.910 +03:00 [INF] [Microsoft.Hosting.Lifetime] Application started. Press Ctrl+C to shut down.
+2026-06-23 10:55:53.914 +03:00 [INF] [Microsoft.Hosting.Lifetime] Hosting environment: Development
+2026-06-23 10:55:53.917 +03:00 [INF] [Microsoft.Hosting.Lifetime] Content root path: C:\Users\hp\source\repos\DigitalWallet\DigitalWallet
+2026-06-23 10:58:47.519 +03:00 [WRN] [Microsoft.EntityFrameworkCore.Model.Validation] No store type was specified for the decimal property 'Amount' on entity type 'Transaction'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-23 10:58:47.531 +03:00 [WRN] [Microsoft.EntityFrameworkCore.Model.Validation] No store type was specified for the decimal property 'Balance' on entity type 'Wallet'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2026-06-23 10:58:50.600 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Auth/Login responded 200 in 5253.4104 ms
+2026-06-23 10:59:05.101 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Admin/users responded 401 in 32.7841 ms
+2026-06-23 10:59:09.454 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Admin/users responded 401 in 9.7935 ms
+2026-06-23 10:59:10.306 +03:00 [INF] [Serilog.AspNetCore.RequestLoggingMiddleware] HTTP GET /api/Admin/users responded 401 in 32.2926 ms

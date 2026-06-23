@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalWallet", "DigitalWallet\DigitalWallet.csproj", "{72AF5AFB-9782-4D9F-8453-061D5E79591F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitalWallet.Tests", "WalletTest\DigitalWallet.Tests.csproj", "{652DA8C6-13B6-436E-AA61-1C088C3A99CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72AF5AFB-9782-4D9F-8453-061D5E79591F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72AF5AFB-9782-4D9F-8453-061D5E79591F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72AF5AFB-9782-4D9F-8453-061D5E79591F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72AF5AFB-9782-4D9F-8453-061D5E79591F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{652DA8C6-13B6-436E-AA61-1C088C3A99CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{652DA8C6-13B6-436E-AA61-1C088C3A99CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{652DA8C6-13B6-436E-AA61-1C088C3A99CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{652DA8C6-13B6-436E-AA61-1C088C3A99CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F6451FE7-3B2F-42D8-8FA8-1E8196E128EE}
+	EndGlobalSection
+EndGlobal

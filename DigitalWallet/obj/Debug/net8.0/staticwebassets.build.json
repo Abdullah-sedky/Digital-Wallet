@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "E/fhmcixre5lnPHV3BuRxOQiQbF0aS6wdSdEoSyUoxo=",
+  "Source": "DigitalWallet",
+  "BasePath": "_content/DigitalWallet",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
