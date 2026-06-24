@@ -17,8 +17,9 @@ namespace DigitalWallet.Controllers
             _context = context;
         }
         [HttpGet("history")]
-        public async Task<IActionResult> paginate(string email, int page=1, int pageSize = 10)
+        public async Task<IActionResult> paginate (int page=1, int pageSize = 10)
         {
+            var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
             var user= await _context.Users.Include(u=>u.Wallet).FirstOrDefaultAsync(u=>u.Email== email);
             if (user == null)
             {

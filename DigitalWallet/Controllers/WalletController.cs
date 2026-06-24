@@ -23,8 +23,6 @@ namespace DigitalWallet.Controllers
         [HttpGet("balance")]
         public async Task<IActionResult> GetBalance()
         {
-            try
-            {
                 var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
                 var myAccount = await _context.Users.Include(u => u.Wallet).FirstOrDefaultAsync(u => u.Email == email);
                 if (myAccount == null)
@@ -33,14 +31,10 @@ namespace DigitalWallet.Controllers
                 }
                 return Ok(myAccount.Wallet.Balance);
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                return Conflict("Concurrent Withdraw. Try again");
-            }
-        }
+        
 
-        [HttpPut("{walletId}/deposit")]
-        public async Task<IActionResult> deposit(Guid walletId, decimal amount, Guid idempotencyKey)
+        [HttpPut("deposit")]
+        public async Task<IActionResult> deposit( decimal amount, Guid idempotencyKey)
             
         {
             try
@@ -50,7 +44,12 @@ namespace DigitalWallet.Controllers
                 {
                     return BadRequest("Request already processed");
                 }
-                var wallet = await _context.Wallets.FindAsync(walletId);
+                var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+                var user = await _context.Users.Include(u => u.Wallet).FirstOrDefaultAsync(u => u.Email == email);
+                if (user == null)
+                    return BadRequest("User not found");
+
+                var wallet = user.Wallet;
                 if (wallet == null)
                 {
                     return BadRequest("Wallet not found");
@@ -63,7 +62,7 @@ namespace DigitalWallet.Controllers
                 await _context.Transactions.AddAsync(new Transaction
                 {
                     SenderWallet = wallet,
-                    SenderWalletId = walletId,
+                    SenderWalletId = wallet.Id,
                     Amount = amount,
                     Timestamp = DateTime.UtcNow,
                     Status = "Deposit",
@@ -79,8 +78,8 @@ namespace DigitalWallet.Controllers
             }
         }
 
-        [HttpPut("{walletId}/withdraw")]
-        public async Task<IActionResult> withdraw(Guid walletId, decimal amount, Guid idempotencyKey)
+        [HttpPut("withdraw")]
+        public async Task<IActionResult> withdraw(decimal amount, Guid idempotencyKey)
         {
             try
             {
@@ -89,7 +88,12 @@ namespace DigitalWallet.Controllers
                 {
                     return BadRequest("Request already processed");
                 }
-                var wallet = await _context.Wallets.FindAsync(walletId);
+                var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+                var user = await _context.Users.Include(u => u.Wallet).FirstOrDefaultAsync(u => u.Email == email);
+                if (user == null)
+                    return BadRequest("User not found");
+
+                var wallet = user.Wallet;
                 if (wallet == null)
                 {
                     return BadRequest("Wallet not found");
@@ -106,7 +110,7 @@ namespace DigitalWallet.Controllers
                 await _context.Transactions.AddAsync(new Transaction
                 {
                     SenderWallet = wallet,
-                    SenderWalletId = walletId,
+                    SenderWalletId = wallet.Id,
                     Amount = amount,
                     Timestamp = DateTime.UtcNow,
                     Status = "Withdrawal",

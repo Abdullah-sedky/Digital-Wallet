@@ -13,18 +13,14 @@ public class RabbitMqPublisher
     {
         _connection = connection;
     }
+   
     public virtual async Task PublishTransactionEvent(object message)
     {
-        var factory = new ConnectionFactory { HostName = "localhost" };
+        if (_connection == null) return;
         using var channel = await _connection.CreateChannelAsync();
-
         await channel.QueueDeclareAsync(queue: "transactions", durable: true, exclusive: false, autoDelete: false);
-
         var json = JsonSerializer.Serialize(message);
         var body = Encoding.UTF8.GetBytes(json);
-
-
-        await channel.BasicPublishAsync(exchange: "", routingKey: "transactions", body: body,);
-
+        await channel.BasicPublishAsync(exchange: "", routingKey: "transactions", body: body);
     }
 }

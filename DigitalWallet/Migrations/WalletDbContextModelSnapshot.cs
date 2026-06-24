@@ -30,6 +30,9 @@ namespace DigitalWallet.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<Guid>("IdempotencyKey")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("ReceiverWalletId")
                         .HasColumnType("uniqueidentifier");
 
@@ -86,6 +89,12 @@ namespace DigitalWallet.Migrations
 
                     b.Property<bool>("IsFrozen")
                         .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");

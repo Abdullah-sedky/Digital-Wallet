@@ -3,6 +3,7 @@ global using DigitalWallet.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using DigitalWallet.Controllers;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace WalletTest
 {
@@ -21,6 +22,7 @@ namespace WalletTest
         {
             var options = new DbContextOptionsBuilder<WalletDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning))
                 .Options;
             return new WalletDbContext(options);
         }

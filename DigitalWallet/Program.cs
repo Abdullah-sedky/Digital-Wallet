@@ -65,10 +65,20 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddSingleton<IConnection>(sp => //creates one rabbitmq connection per app run
 {
-    var factory = new ConnectionFactory { HostName = "localhost" };
-    return factory.CreateConnectionAsync().GetAwaiter().GetResult(); //should cause a deadlock, but doesn't in program.cs since there's no requests
+    try
+    {
+        var factory = new ConnectionFactory { HostName = "localhost" };
+        return factory.CreateConnectionAsync().GetAwaiter().GetResult(); //should cause a deadlock, but doesn't in program.cs since there's no requests
+    }
+    catch
+    {
+        return null;
+    }
 });
-
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
 builder.Services.AddSingleton<RabbitMqPublisher>();
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));

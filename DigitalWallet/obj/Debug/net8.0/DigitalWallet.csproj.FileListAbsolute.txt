@@ -159,6 +159,11 @@ C:\Users\hp\source\repos\DigitalWallet\DigitalWallet\bin\Debug\net8.0\System.IO.
 C:\Users\hp\source\repos\DigitalWallet\DigitalWallet\bin\Debug\net8.0\System.Text.Encodings.Web.dll
 C:\Users\hp\source\repos\DigitalWallet\DigitalWallet\bin\Debug\net8.0\System.Text.Json.dll
 C:\Users\hp\source\repos\DigitalWallet\DigitalWallet\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+C:\Users\hp\source\repos\DigitalWallet\DigitalWallet\bin\Debug\net8.0\Castle.Core.dll
+C:\Users\hp\source\repos\DigitalWallet\DigitalWallet\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.InMemory.dll
+C:\Users\hp\source\repos\DigitalWallet\DigitalWallet\bin\Debug\net8.0\Moq.dll
+C:\Users\hp\source\repos\DigitalWallet\DigitalWallet\bin\Debug\net8.0\RabbitMQ.Client.dll
+C:\Users\hp\source\repos\DigitalWallet\DigitalWallet\obj\Debug\net8.0\DigitalWallet.sourcelink.json
 C:\Users\hp\source\repos\DigitalWallet\DigitalWallet\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
 C:\Users\hp\source\repos\DigitalWallet\DigitalWallet\obj\Debug\net8.0\staticwebassets\msbuild.DigitalWallet.Microsoft.AspNetCore.StaticWebAssets.props
 C:\Users\hp\source\repos\DigitalWallet\DigitalWallet\obj\Debug\net8.0\staticwebassets\msbuild.build.DigitalWallet.props
