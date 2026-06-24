@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DigitalWallet.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DigitalWallet.Controllers
 {
+    [Authorize(Roles="Customer")]
     [Route("api/[controller]")]
     [ApiController]
     public class TransactionController : ControllerBase

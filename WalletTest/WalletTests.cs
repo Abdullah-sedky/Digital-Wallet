@@ -1,7 +1,20 @@
+global using Xunit;
+global using DigitalWallet.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using DigitalWallet.Controllers;
 
 namespace WalletTest
 {
+    public class FakeRabbitMqPublisher : RabbitMqPublisher
+    {
+        public FakeRabbitMqPublisher() : base(null!) { }
+        public override async Task PublishTransactionEvent(object message)
+        {
+            await Task.CompletedTask;
+        }
+    }
+
     public class WalletTests
     {
         private WalletDbContext GetContext()
@@ -12,53 +25,105 @@ namespace WalletTest
             return new WalletDbContext(options);
         }
 
+        private (WalletController controller, WalletDbContext context) GetController()
+        {
+            var context = GetContext();
+            var publisher = new FakeRabbitMqPublisher();
+            var controller = new WalletController(context, publisher);
+            return (controller, context);
+        }
+
         [Fact]
         public async Task Deposit_IncreasesBalance()
         {
-            var context = GetContext();
+            var (controller, context) = GetController();
             var user = new User { Email = "test@test.com", PasswordHash = "x" };
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
-            user.Wallet.Balance += 100;
-            await context.SaveChangesAsync();
+            await controller.deposit(user.Wallet.Id, 100, Guid.NewGuid());
 
-            Assert.Equal(100, user.Wallet.Balance);
+            var wallet = await context.Wallets.FindAsync(user.Wallet.Id);
+            Assert.Equal(100, wallet!.Balance);
         }
 
         [Fact]
-        public async Task Withdraw_SucceedsWithSufficientFunds()
+        public async Task Deposit_FrozenWallet_ReturnsBadRequest()
         {
-            var context = GetContext();
+            var (controller, context) = GetController();
+            var user = new User { Email = "test@test.com", PasswordHash = "x" };
+            user.Wallet.IsFrozen = true;
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
+
+            var result = await controller.deposit(user.Wallet.Id, 100, Guid.NewGuid());
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Deposit_DuplicateIdempotencyKey_ReturnsBadRequest()
+        {
+            var (controller, context) = GetController();
+            var user = new User { Email = "test@test.com", PasswordHash = "x" };
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
+
+            var key = Guid.NewGuid();
+            await controller.deposit(user.Wallet.Id, 100, key);
+            var result = await controller.deposit(user.Wallet.Id, 100, key);
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Withdraw_DecreasesBalance()
+        {
+            var (controller, context) = GetController();
             var user = new User { Email = "test@test.com", PasswordHash = "x" };
             user.Wallet.Balance = 200;
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
-            user.Wallet.Balance -= 100;
-            await context.SaveChangesAsync();
+            await controller.withdraw(user.Wallet.Id, 100, Guid.NewGuid());
 
-            Assert.Equal(100, user.Wallet.Balance);
+            var wallet = await context.Wallets.FindAsync(user.Wallet.Id);
+            Assert.Equal(100, wallet!.Balance);
         }
 
         [Fact]
-        public async Task Withdraw_FailsWithInsufficientFunds()
+        public async Task Withdraw_InsufficientFunds_ReturnsBadRequest()
         {
-            var context = GetContext();
+            var (controller, context) = GetController();
             var user = new User { Email = "test@test.com", PasswordHash = "x" };
             user.Wallet.Balance = 50;
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
-            bool sufficientFunds = user.Wallet.Balance >= 100;
+            var result = await controller.withdraw(user.Wallet.Id, 100, Guid.NewGuid());
 
-            Assert.False(sufficientFunds);
+            Assert.IsType<BadRequestObjectResult>(result);
         }
 
         [Fact]
-        public async Task Transfer_UpdatesBothBalancesCorrectly()
+        public async Task Withdraw_FrozenWallet_ReturnsBadRequest()
         {
-            var context = GetContext();
+            var (controller, context) = GetController();
+            var user = new User { Email = "test@test.com", PasswordHash = "x" };
+            user.Wallet.Balance = 200;
+            user.Wallet.IsFrozen = true;
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
+
+            var result = await controller.withdraw(user.Wallet.Id, 100, Guid.NewGuid());
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Transfer_UpdatesBothBalances()
+        {
+            var (controller, context) = GetController();
             var sender = new User { Email = "sender@test.com", PasswordHash = "x" };
             var receiver = new User { Email = "receiver@test.com", PasswordHash = "x" };
             sender.Wallet.Balance = 200;
@@ -66,26 +131,60 @@ namespace WalletTest
             context.Users.AddRange(sender, receiver);
             await context.SaveChangesAsync();
 
-            sender.Wallet.Balance -= 100;
-            receiver.Wallet.Balance += 100;
-            await context.SaveChangesAsync();
+            await controller.transfer(sender.Wallet.Id, receiver.Wallet.Id, 100, Guid.NewGuid());
 
-            Assert.Equal(100, sender.Wallet.Balance);
-            Assert.Equal(150, receiver.Wallet.Balance);
+            var senderWallet = await context.Wallets.FindAsync(sender.Wallet.Id);
+            var receiverWallet = await context.Wallets.FindAsync(receiver.Wallet.Id);
+            Assert.Equal(100, senderWallet!.Balance);
+            Assert.Equal(150, receiverWallet!.Balance);
         }
 
         [Fact]
-        public async Task Transfer_FailsWhenSenderHasInsufficientFunds()
+        public async Task Transfer_InsufficientFunds_ReturnsBadRequest()
         {
-            var context = GetContext();
+            var (controller, context) = GetController();
             var sender = new User { Email = "sender@test.com", PasswordHash = "x" };
+            var receiver = new User { Email = "receiver@test.com", PasswordHash = "x" };
             sender.Wallet.Balance = 30;
-            context.Users.Add(sender);
+            context.Users.AddRange(sender, receiver);
             await context.SaveChangesAsync();
 
-            bool canTransfer = sender.Wallet.Balance >= 100;
+            var result = await controller.transfer(sender.Wallet.Id, receiver.Wallet.Id, 100, Guid.NewGuid());
 
-            Assert.False(canTransfer);
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Transfer_DuplicateIdempotencyKey_ReturnsBadRequest()
+        {
+            var (controller, context) = GetController();
+            var sender = new User { Email = "sender@test.com", PasswordHash = "x" };
+            var receiver = new User { Email = "receiver@test.com", PasswordHash = "x" };
+            sender.Wallet.Balance = 500;
+            context.Users.AddRange(sender, receiver);
+            await context.SaveChangesAsync();
+
+            var key = Guid.NewGuid();
+            await controller.transfer(sender.Wallet.Id, receiver.Wallet.Id, 100, key);
+            var result = await controller.transfer(sender.Wallet.Id, receiver.Wallet.Id, 100, key);
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task Transfer_FrozenSender_ReturnsBadRequest()
+        {
+            var (controller, context) = GetController();
+            var sender = new User { Email = "sender@test.com", PasswordHash = "x" };
+            var receiver = new User { Email = "receiver@test.com", PasswordHash = "x" };
+            sender.Wallet.Balance = 200;
+            sender.Wallet.IsFrozen = true;
+            context.Users.AddRange(sender, receiver);
+            await context.SaveChangesAsync();
+
+            var result = await controller.transfer(sender.Wallet.Id, receiver.Wallet.Id, 100, Guid.NewGuid());
+
+            Assert.IsType<BadRequestObjectResult>(result);
         }
     }
 }

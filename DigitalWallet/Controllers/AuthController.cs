@@ -3,6 +3,7 @@ using DigitalWallet.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.RegularExpressions;
 namespace DigitalWallet.Controllers
 {
     [Route("api/[Controller]")]
@@ -18,9 +19,21 @@ namespace DigitalWallet.Controllers
             _jwtcreate = jwtcreate;
         }
 
-        [HttpGet("Register")]
-        public async Task<IActionResult> register(string email, string password)
+        [HttpPost("Register")]
+        public async Task<IActionResult> register([FromForm] string email, [FromForm] string password)
         {
+            var emailRegex = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            var passwordRegex = @"^(?=.*[A-Z])(?=.*\d).{8,}$";
+
+            if (!Regex.IsMatch(email, emailRegex))
+                return BadRequest("Invalid email format");
+
+            if (!Regex.IsMatch(password, passwordRegex))
+                return BadRequest("Password must be at least 8 characters, include a number and an uppercase letter");
+
+            var existing = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (existing != null)
+                return BadRequest("Email already registered");
             var user = new User
             {
                 Email = email,
@@ -32,8 +45,8 @@ namespace DigitalWallet.Controllers
         }
 
 
-        [HttpGet("Login")]
-        public async Task<IActionResult> login(string email, string password)
+        [HttpPost("Login")]
+        public async Task<IActionResult> login([FromForm] string email, [FromForm] string password)
         {
             if (string.IsNullOrEmpty(password))
             {

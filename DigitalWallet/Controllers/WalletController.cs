@@ -14,55 +14,85 @@ namespace DigitalWallet.Controllers
     {
         private readonly WalletDbContext _context;
         private readonly RabbitMqPublisher _publisher;
-        public WalletController(WalletDbContext context)
+        public WalletController(WalletDbContext context, RabbitMqPublisher publisher)
         {
+            _publisher = publisher;
             _context = context;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetBalance(string email)
+        [HttpGet("balance")]
+        public async Task<IActionResult> GetBalance()
         {
-            var myAccount = await _context.Users.Include(u=>u.Wallet).FirstOrDefaultAsync(u=>u.Email==email);
-            if (myAccount == null)
+            try
             {
-                return BadRequest("User not found");
+                var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+                var myAccount = await _context.Users.Include(u => u.Wallet).FirstOrDefaultAsync(u => u.Email == email);
+                if (myAccount == null)
+                {
+                    return BadRequest("User not found");
+                }
+                return Ok(myAccount.Wallet.Balance);
             }
-            return Ok(myAccount.Wallet.Balance);
+            catch (DbUpdateConcurrencyException)
+            {
+                return Conflict("Concurrent Withdraw. Try again");
+            }
         }
 
         [HttpPut("{walletId}/deposit")]
-        public async Task<IActionResult> deposit(Guid walletId, decimal amount)
+        public async Task<IActionResult> deposit(Guid walletId, decimal amount, Guid idempotencyKey)
+            
         {
-            var wallet = await _context.Wallets.FindAsync(walletId);
-            if (wallet == null)
+            try
             {
-                return BadRequest("Wallet not found");
+                var existing = await _context.Transactions.FirstOrDefaultAsync(t => t.IdempotencyKey == idempotencyKey);
+                if (existing != null)
+                {
+                    return BadRequest("Request already processed");
+                }
+                var wallet = await _context.Wallets.FindAsync(walletId);
+                if (wallet == null)
+                {
+                    return BadRequest("Wallet not found");
+                }
+                if (wallet.IsFrozen)
+                {
+                    return BadRequest("Can't deposit. Wallet frozen.");
+                }
+                wallet.Balance += amount;
+                await _context.Transactions.AddAsync(new Transaction
+                {
+                    SenderWallet = wallet,
+                    SenderWalletId = walletId,
+                    Amount = amount,
+                    Timestamp = DateTime.UtcNow,
+                    Status = "Deposit",
+                    IdempotencyKey = idempotencyKey
+                });
+                await _context.SaveChangesAsync();
+                await _publisher.PublishTransactionEvent($"Deposit of {amount} completed for wallet {wallet.Id}");
+                return Ok();
             }
-            if (wallet.IsFrozen)
+            catch(DbUpdateConcurrencyException)
             {
-                return BadRequest("Can't deposit. Wallet frozen.");
+                return Conflict("Concurrent deposit. Try again.");
             }
-            wallet.Balance += amount;
-            await _context.Transactions.AddAsync(new Transaction
-            {
-                SenderWallet = wallet,
-                SenderWalletId = walletId,
-                Amount = amount,
-                Timestamp = DateTime.UtcNow, 
-                Status= "Deposit"
-            });
-            await _context.SaveChangesAsync();
-            return Ok();
-
         }
 
         [HttpPut("{walletId}/withdraw")]
-        public async Task<IActionResult> withdraw(Guid walletId, decimal amount)
+        public async Task<IActionResult> withdraw(Guid walletId, decimal amount, Guid idempotencyKey)
         {
-        var wallet = await _context.Wallets.FindAsync(walletId);
-        if (wallet == null)
+            try
             {
-                return BadRequest("Wallet not found");
+                var existing = await _context.Transactions.FirstOrDefaultAsync(t => t.IdempotencyKey == idempotencyKey);
+                if (existing != null)
+                {
+                    return BadRequest("Request already processed");
+                }
+                var wallet = await _context.Wallets.FindAsync(walletId);
+                if (wallet == null)
+                {
+                    return BadRequest("Wallet not found");
                 }
                 else if (wallet.Balance < amount)
                 {
@@ -70,7 +100,7 @@ namespace DigitalWallet.Controllers
                 }
                 else if (wallet.IsFrozen)
                 {
-                return BadRequest("Can't withdraw. Wallet frozen.");
+                    return BadRequest("Can't withdraw. Wallet frozen.");
                 }
                 wallet.Balance -= amount;
                 await _context.Transactions.AddAsync(new Transaction
@@ -79,15 +109,21 @@ namespace DigitalWallet.Controllers
                     SenderWalletId = walletId,
                     Amount = amount,
                     Timestamp = DateTime.UtcNow,
-                    Status = "Withdrawal"
+                    Status = "Withdrawal",
+                    IdempotencyKey= idempotencyKey
                 });
                 await _context.SaveChangesAsync();
-                return Ok();
-            
+                await _publisher.PublishTransactionEvent($"Withdew {amount} from wallet {wallet.Id}");
 
+                return Ok();
+            }
+            catch(DbUpdateConcurrencyException)
+            {
+                return Conflict("Concurrent withdrawal. Try again.");
+            }
         }
 
-        [HttpPut("{walletId}/transfer")]
+        [HttpPut("transfer")]
         public async Task<IActionResult> transfer(Guid senderId, Guid recieverId, decimal amount, Guid idempotencyKey)
         {
             var existing= await _context.Transactions.FirstOrDefaultAsync(u=>u.IdempotencyKey==idempotencyKey);
@@ -126,10 +162,13 @@ namespace DigitalWallet.Controllers
                     ReceiverWallet = reciever,
                     Amount = amount,
                     Timestamp = DateTime.UtcNow,
-                    Status = "Transfer"
+                    Status = "Transfer",
+                    IdempotencyKey = idempotencyKey
                 });
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
+                await _publisher.PublishTransactionEvent($"Transferred {amount} from wallet {senderId} for wallet {recieverId}");
+
                 return Ok("Transfer successful");
             }
             catch (DbUpdateConcurrencyException)

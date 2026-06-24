@@ -13,7 +13,7 @@ public class RabbitMqPublisher
     {
         _connection = connection;
     }
-    public async Task PublishTransactionEvent(object message)
+    public virtual async Task PublishTransactionEvent(object message)
     {
         var factory = new ConnectionFactory { HostName = "localhost" };
         using var channel = await _connection.CreateChannelAsync();

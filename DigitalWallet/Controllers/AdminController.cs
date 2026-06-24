@@ -49,6 +49,7 @@ namespace DigitalWallet.Controllers
                 return BadRequest("Wallet already frozen");
             }
             UserWallet.Wallet.IsFrozen = true;
+            await _context.SaveChangesAsync();
             return Ok(UserWallet);
         }
 
@@ -66,6 +67,7 @@ namespace DigitalWallet.Controllers
                 return BadRequest("Wallet already active");
             }
             UserWallet.Wallet.IsFrozen = false;
+            await _context.SaveChangesAsync();
             return Ok(UserWallet);
         }
 
