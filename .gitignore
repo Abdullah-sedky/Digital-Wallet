@@ -1,6 +1,6 @@
-**bin/
-**obj/
-**Migrations/
+**/bin/
+**/obj/
+**/Migrations/
 .vs/
 appsettings.Development.json
 appsettings.json
